@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box{
+            width: 400px;
+            margin: 50px auto;
+	    background-color:green;
+        }
+        .img{
+            width: 300px;
+            height: 300px;
+            margin: 0px auto;
+        }
+        img{
+            width: 100%;
+            height: 100%;
+        }
+        p{
+
+        }
+        .img{
+            border: 1px solid black;
+        }
+        button{
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="img"></div>
+        <p class="name"></p>
+        <p class="des"></p>
+        <button>baby</button>
+        <button>hxm</button>
+        <button>lh</button>
+    </div>
+</body>
+<script>
+    var btns=document.querySelectorAll("button");
+    for(var i=0;i<btns.length;i++){
+        btns[i].onclick=function () {
+            if(document.querySelector(".img").hasChildNodes("img")){
+                document.querySelector(".img").removeChild(document.querySelector(".img").firstChild);
+            }
+
+            var n=this.innerHTML;
+            var xhr=new XMLHttpRequest();
+            xhr.open("get","../getStars/getStars.php");
+            xhr.send();
+            xhr.onreadystatechange=function () {
+                if(xhr.readyState==4&&xhr.status==200){
+                    var json=xhr.responseText;
+                    var newJson=JSON.parse(json);
+                    for(var j=0;j<newJson.length;j++){
+                        if(n==newJson[j].name){
+                            document.querySelector(".name").innerHTML=newJson[j].name;
+                            var img=document.createElement("img");
+                            img.setAttribute("src",newJson[j].path);
+                            document.querySelector(".img").appendChild(img);
+                            document.querySelector(".des").innerHTML=newJson[j].description;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>
+</html>
